@@ -1,0 +1,34 @@
+appId: com.agendapro.app
+---
+# Test 2: Professional Dashboard Flow (View & Cancel Appointment)
+- launchApp
+
+# Step 1: Switch to Professional Mode via Header
+- assertVisible:
+    id: "header-mode-toggle"
+- tapOn:
+    id: "btn-mode-pro"
+
+# Step 2: Verify Professional Dashboard
+- assertVisible:
+    id: "screen-dashboard-title"
+- assertVisible:
+    id: "total-appointments-count"
+- assertVisible:
+    id: "total-revenue-value"
+
+# Step 3: Filter Appointments
+- tapOn:
+    id: "btn-filter-confirmed"
+- tapOn:
+    id: "btn-filter-all"
+
+# Step 4: Cancel an active appointment
+- tapOn:
+    id: "btn-cancel-appointment-apt-101"
+
+# Step 5: Verify status updated to CANCELLED
+- tapOn:
+    id: "btn-filter-cancelled"
+- assertVisible:
+    id: "appointment-card-apt-101"

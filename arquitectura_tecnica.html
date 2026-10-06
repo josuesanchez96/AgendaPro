@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura Técnica - AgendaPro</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+          darkMode: true,
+          background: '#0f172a',
+          primaryColor: '#0284c7',
+          primaryTextColor: '#ffffff',
+          primaryBorderColor: '#38bdf8',
+          lineColor: '#38bdf8',
+          secondaryColor: '#10b981',
+          tertiaryColor: '#1e293b'
+        }
+      });
+    });
+  </script>
+  <style>
+    :root {
+      --bg-primary: #090d16;
+      --bg-card: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --border-color: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 2.3rem;
+      color: var(--text-main);
+    }
+
+    header h1 span {
+      color: var(--accent-blue);
+    }
+
+    .reading-time {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 16px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: var(--accent-blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .diagram-container {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      margin-top: 16px;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .tech-card {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .tech-card h4 {
+      color: var(--accent-green);
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .tech-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .pattern-list {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .pattern-list li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 12px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .pattern-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--accent-green);
+      font-weight: bold;
+    }
+
+    .pattern-title {
+      font-weight: bold;
+      color: var(--accent-blue);
+    }
+
+    .tree-box {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #38bdf8;
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Arquitectura Técnica - Agenda<span>Pro</span></h1>
+      <p>Especificación de Diseño de Software, Patrones de Arquitectura y Flujos de Datos</p>
+      <div class="reading-time">⏱️ Tiempo estimado de lectura: 4 minutos</div>
+    </header>
+
+    <!-- SECCIÓN 1: RESUMEN Y DIAGRAMA MERMAID -->
+    <div class="section">
+      <h2 class="section-title">📐 1. Diagrama de Arquitectura y Flujo de Datos (Mermaid.js)</h2>
+      <p style="color: var(--text-muted);">El siguiente diagrama representa la arquitectura desacoplada entre el estado global (Zustand Store), el orquestador de navegación (`AppNavigator`) y las pantallas funcionales divididas en Modo Cliente y Modo Profesional:</p>
+
+      <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    subgraph UI_Layer [" Capa de Presentación (UI & Navigation) "]
+        Header["Header Component <br/>(Mode Switcher & Brand)"]
+        Nav["AppNavigator <br/>(Step & Mode Orchestrator)"]
+
+        subgraph Client_Flow [" Modo Cliente (Flujo de Reserva) "]
+            S1["1. LocationScreen"]
+            S2["2. ProfessionalScreen"]
+            S3["3. ServiceScreen"]
+            S4["4. DateTimeScreen"]
+            S5["5. ConfirmationScreen"]
+        end
+
+        subgraph Pro_Flow [" Modo Profesional "]
+            P1["DashboardScreen <br/>(Métricas & Listado Cronológico)"]
+        end
+    end
+
+    subgraph State_Layer [" Capa de Estado Global (Zustand Store) "]
+        Store[("useAppStore <br/>(State Single Source of Truth)")]
+        MockDB[("Base de Datos Mockeada <br/>(Sedes, Profesionales, Servicios, Citas)")]
+    end
+
+    subgraph E2E_Layer [" Capa de Pruebas Automatizadas "]
+        Maestro["Maestro E2E Framework <br/>(Usa testID deterministicos)"]
+    end
+
+    Header -->|setMode('CLIENT'/'PROFESSIONAL')| Store
+    Nav -->|Renderiza| Client_Flow
+    Nav -->|Renderiza| Pro_Flow
+
+    S1 -->|setSelectedLocation| Store
+    S1 -->|Paso Siguiente| S2
+    S2 -->|setSelectedProfessional| Store
+    S2 -->|Paso Siguiente| S3
+    S3 -->|setSelectedService| Store
+    S3 -->|Paso Siguiente| S4
+    S4 -->|setClientInfo & setDateTime| Store
+    S4 -->|Paso Siguiente| S5
+    S5 -->|addAppointment| Store
+
+    P1 -->|Lee Citas & Metrics| Store
+    P1 -->|cancelAppointment| Store
+
+    Maestro -.->|Ejecuta Taps & InputText| UI_Layer
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: LIBRERÍAS Y TECNOLOGÍAS -->
+    <div class="section">
+      <h2 class="section-title">📦 2. Stack Tecnológico y Librerías</h2>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>React Native + Expo SDK 52</h4>
+          <p>Framework base multiplataforma de alto rendimiento con TypeScript estricto habilitado.</p>
+        </div>
+        <div class="tech-card">
+          <h4>Zustand</h4>
+          <p>Gestión de estado global ligera, sin boilerplate de Redux, ofreciendo actualizaciones reactivas y síncronas.</p>
+        </div>
+        <div class="tech-card">
+          <h4>React Navigation</h4>
+          <p>Navegación fluida y estructurada entre el flujo cliente por pasos y el panel profesional.</p>
+        </div>
+        <div class="tech-card">
+          <h4>Maestro (`maestro.dev`)</h4>
+          <p>Framework de automatización E2E declarativo mediante archivos YAML alineado a escenarios BDD Gherkin.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: PATRONES DE DISEÑO Y ESTRUCTURA -->
+    <div class="section">
+      <h2 class="section-title">🧠 3. Patrones de Diseño Aplicados</h2>
+      <ul class="pattern-list">
+        <li>
+          <span class="pattern-title">Single Source of Truth (SSOT):</span> 
+          Unificación de todas las entidades (Sedes, Profesionales, Servicios, Citas) dentro de un único store de Zustand (`useAppStore.ts`), permitiendo que el Dashboard del Profesional refleje inmediatamente las citas agendadas por el Cliente.
+        </li>
+        <li>
+          <span class="pattern-title">Modular Screen Step Pattern:</span> 
+          El flujo de reserva está fragmentado en 5 componentes de pantalla desacoplados. Cada pantalla es responsable de su validación y delega la transición al orquestador `AppNavigator`.
+        </li>
+        <li>
+          <span class="pattern-title">Deterministic TestIDs for Automation:</span> 
+          Cada botón, card, campo de texto e indicador visual cuenta con un atributo `testID` estático y predecible (e.g. `btn-select-location-loc-1`, `input-client-name`), facilitando la ejecución robusta de pruebas E2E sin flakiness.
+        </li>
+        <li>
+          <span class="pattern-title">Continuous Native Generation (CNG):</span> 
+          Cumplimiento estricto con las directrices de Expo SDK moderno; la configuración nativa se administra 100% mediante `app.json` sin alterar manualmente las carpetas `android/` o `ios/`.
+        </li>
+      </ul>
+    </div>
+
+    <!-- SECCIÓN 4: ESTRUCTURA DEL PROYECTO -->
+    <div class="section">
+      <h2 class="section-title">📂 4. Estructura de Directorios del Código Base</h2>
+      <div class="tree-box">
+c:\Proyectos2026\AgendaPro\
+├── src/
+│   ├── components/
+│   │   └── Header.tsx           # Barra superior con Mode Switcher y Marca
+│   ├── navigation/
+│   │   └── AppNavigator.tsx     # Router y Orquestador de Flujos
+│   ├── screens/
+│   │   ├── client/              # Pantallas del Usuario Final
+│   │   │   ├── LocationScreen.tsx
+│   │   │   ├── ProfessionalScreen.tsx
+│   │   │   ├── ServiceScreen.tsx
+│   │   │   ├── DateTimeScreen.tsx
+│   │   │   └── ConfirmationScreen.tsx
+│   │   └── professional/        # Pantalla de Administración
+│   │       └── DashboardScreen.tsx
+│   ├── store/
+│   │   └── useAppStore.ts       # Estado Global Zustand con Base de Datos Mock
+│   └── types/
+│       └── index.ts             # Modelos de Datos TypeScript
+├── e2e/
+│   ├── gherkin_scenarios.feature # Criterios de Aceptación Gherkin (BDD)
+│   ├── booking_flow.yaml        # Script E2E de Reserva Cliente
+│   ├── professional_dashboard.yaml # Script E2E de Dashboard Profesional
+│   └── validation_flow.yaml     # Script E2E de Validaciones
+├── e2e_testing.html             # Entregable HTML de Pruebas E2E
+└── arquitectura_tecnica.html    # Entregable HTML de Arquitectura
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

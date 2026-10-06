@@ -1,0 +1,42 @@
+appId: com.agendapro.app
+---
+# Test 3: Form Validation Flow on DateTime Screen
+- launchApp
+
+# Navigate to DateTime Screen
+- tapOn:
+    id: "btn-select-location-loc-1"
+- tapOn:
+    id: "btn-select-professional-pro-1"
+- tapOn:
+    id: "btn-select-service-srv-1"
+
+# Attempt to proceed without selecting date or time
+- tapOn:
+    id: "btn-continue-confirmation"
+- assertVisible:
+    id: "error-validation-message"
+
+# Select date and time, but leave name empty
+- tapOn:
+    id: "date-chip-2026-10-05"
+- tapOn:
+    id: "time-chip-10:30"
+- tapOn:
+    id: "btn-continue-confirmation"
+- assertVisible:
+    id: "error-validation-message"
+
+# Fill in name and phone and proceed
+- tapOn:
+    id: "input-client-name"
+- inputText: "Valeria Mendoza"
+- tapOn:
+    id: "input-client-phone"
+- inputText: "5588776655"
+- tapOn:
+    id: "btn-continue-confirmation"
+
+# Verify successful navigation to Confirmation summary
+- assertVisible:
+    id: "screen-confirmation-title"

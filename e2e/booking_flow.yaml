@@ -1,0 +1,70 @@
+appId: host.exp.exponent
+---
+# Test 1: Complete End-to-End Booking Flow for Client
+# - launchApp
+
+# Step 1: Select Sede
+- assertVisible:
+    id: "screen-location-title"
+- tapOn:
+    id: "btn-select-location-loc-1"
+
+# Step 2: Select Professional
+- assertVisible:
+    id: "screen-professional-title"
+- assertVisible:
+    id: "selected-location-name"
+- tapOn:
+    id: "btn-select-professional-pro-1"
+
+# Step 3: Select Service
+- assertVisible:
+    id: "screen-service-title"
+- assertVisible:
+    id: "selected-professional-name"
+- tapOn:
+    id: "btn-select-service-srv-1"
+
+# Step 4: Select Date, Time & Enter Client Info
+- assertVisible:
+    id: "screen-datetime-title"
+- tapOn:
+    id: "date-chip-2026-10-05"
+- tapOn:
+    id: "time-chip-10:30"
+- tapOn:
+    id: "input-client-name"
+- inputText: "Carlos Eduardo"
+- hideKeyboard
+- scrollUntilVisible:
+        element:
+          id: "input-client-phone"
+        direction: DOWN
+- tapOn:
+    id: "input-client-phone"
+- inputText: "5512345678"
+- hideKeyboard
+- scrollUntilVisible:
+        element:
+          id: "btn-continue-confirmation"
+        direction: DOWN
+- tapOn:
+    id: "btn-continue-confirmation"
+
+# Step 5: Summary & Final Confirmation
+- assertVisible:
+    id: "screen-confirmation-title"
+- assertVisible:
+    id: "summary-location-name"
+- assertVisible:
+    id: "summary-professional-name"
+- tapOn:
+    id: "btn-confirm-booking"
+
+# Verification: Ticket Confirmation Screen
+- assertVisible:
+    id: "confirmation-success-msg"
+- assertVisible:
+    id: "created-appointment-ticket"
+- assertVisible:
+    id: "btn-go-to-dashboard"
