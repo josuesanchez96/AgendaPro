@@ -76,4 +76,4 @@ En la raíz de este proyecto encontrarás dos artefactos HTML generados para doc
 * `e2e_testing.html`: Documentación detallada de los escenarios de prueba redactados en **Gherkin**, junto con los scripts de Maestro y espacios para las capturas de pantalla de la ejecución.
 
 ---
-**Desarrollado para:** Proyecto de Testing y Arquitectura Móvil [S13]
+**Desarrollado por:** Josué Sánchez — Proyecto de Automatización E2E & Arquitectura Móvil
